@@ -31,7 +31,7 @@ const asapCondensed = Asap_Condensed({
 
 export const metadata: Metadata = {
   title: "GameGrid | All-in-One Platform",
-  description: "A modern gaming interface built with Next.js",
+  description: "Built for the grind. Engineered for every game. GameGrid is the ultimate sports league management platform with real-time stats, player dashboards, and strategy tools.",
   icons: {
     icon: [
       { url: getBasePath("/logos/gamegrid-logo.png"), sizes: "16x16", type: "image/png" },

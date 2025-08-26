@@ -8,7 +8,7 @@
 // - CTA button: edit text/color in the Right CTA Link (style backgroundColor and inner text)
 
 import Image from "next/image";
-import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -37,22 +37,7 @@ export default function Navbar({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Smooth scroll: updates window scroll to the anchor target
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault();
-    setIsMobileMenuOpen(false); // close mobile menu when navigating
-    const target = document.getElementById(targetId.replace('#', ''));
-    if (target) {
-      gsap.to(window, {
-        duration: 1.2,
-        scrollTo: {
-          y: target, // edit target ids in hrefs below
-          offsetY: 100, // adjust if navbar height changes
-        },
-        ease: "power2.inOut",
-      });
-    }
-  };
+
 
   // Toggle mobile menu
   const toggleMobileMenu = () => {

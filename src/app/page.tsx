@@ -11,6 +11,7 @@
 // - Pricing: adjust <PricingCard/> props, features, and default `yearly` state
 // - Footer: update links and logo
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState, useRef } from "react";
 import gsap from "gsap";
 import { AnimatePresence, motion } from "framer-motion";
@@ -387,13 +388,21 @@ function HomeContent({ words, index, yearly, setYearly, onFoundersClick }: {
               </h4>
               <ul className="space-y-3 text-white/80 text-sm">
                 <li>
+                  <Link 
+                    href="/contact" 
+                    className="hover:text-white transition-colors"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
                   <a 
                     href="https://calendly.com/gamegrid/30min" 
                     className="hover:text-white transition-colors" 
                     target="_blank" 
                     rel="noopener noreferrer"
                   >
-                    Contact Us
+                    Schedule Meeting
                   </a>
                 </li>
                 <li>
@@ -418,6 +427,26 @@ function HomeContent({ words, index, yearly, setYearly, onFoundersClick }: {
               <ul className="space-y-3 text-white/80 text-sm">
                 <li>For iPhone <span className="text-white/50">(Soon)</span></li>
                 <li>For Android <span className="text-white/50">(Soon)</span></li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h4
+                className="text-white text-lg font-semibold mb-4"
+                style={{ fontFamily: 'var(--font-gamegrid-title)' }}
+              >
+                Legal
+              </h4>
+              <ul className="space-y-3 text-white/80 text-sm">
+                <li>
+                  <Link 
+                    href="/privacy" 
+                    className="hover:text-white transition-colors"
+                  >
+                    Terms & Privacy Policy
+                  </Link>
+                </li>
               </ul>
             </div>
 

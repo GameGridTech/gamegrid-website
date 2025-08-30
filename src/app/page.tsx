@@ -65,32 +65,25 @@ export default function Home() {
   const handleNavigation = (sectionId: string) => {
     console.log('handleNavigation called with:', sectionId, 'current page:', currentPage);
     
-    const pushPathForSection = () => {
-      if (typeof window === 'undefined') return;
-      if (sectionId === '#home') {
-        window.history.pushState({ page: 'home' }, '', '/');
-      } else if (sectionId === '#pricing') {
-        window.history.pushState({ page: 'pricing' }, '', '/pricing');
-      }
-    };
-
     if (currentPage === 'founders') {
       // Leaving founders: update URL and return to home, optionally targeting a section
       console.log('Setting target section from founders to:', sectionId);
-      pushPathForSection();
       if (sectionId === '#home') {
+        window.history.pushState({ page: 'home' }, '', '/');
         setCurrentPage('home');
         setTimeout(() => window.scrollTo(0, 0), 300);
-      } else {
+      } else if (sectionId === '#pricing') {
+        window.history.pushState({ page: 'pricing' }, '', '/pricing');
         setTargetSection(sectionId);
         setCurrentPage('home');
       }
     } else {
-      // Already on home: update URL then scroll
-      pushPathForSection();
+      // Already on home: scroll to section and update URL
       if (sectionId === '#home') {
+        window.history.pushState({ page: 'home' }, '', '/');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
+      } else if (sectionId === '#pricing') {
+        window.history.pushState({ page: 'pricing' }, '', '/pricing');
         const element = document.getElementById(sectionId.replace('#', ''));
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
@@ -133,6 +126,7 @@ export default function Home() {
     const urlParams = new URLSearchParams(window.location.search);
     const redirect = urlParams.get('redirect');
     
+    // Only handle redirects on initial page load, not during navigation
     if (redirect === 'founders') {
       // Replace URL to /founders and trigger founders page
       window.history.replaceState({ page: 'founders' }, '', '/founders');
@@ -144,7 +138,7 @@ export default function Home() {
       setCurrentPage('home');
       setTargetSection('#pricing');
     }
-  }, []);
+  }, []); // Empty dependency array ensures this only runs once on mount
 
   return (
     <>

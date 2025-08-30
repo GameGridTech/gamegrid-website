@@ -32,6 +32,16 @@ export default function Home() {
   // Reset scroll position when changing pages, but allow for delayed scrolling to sections
   const [targetSection, setTargetSection] = useState<string | null>(null);
   
+  // NOTE [STATIC-ONLY WORKAROUND]:
+  // This file contains a few URL/History workarounds to support deep linking when hosted as a static site (GitHub Pages):
+  // 1) popstate handler (below) that interprets /founders and /pricing paths
+  // 2) one-time redirect param handler for "?redirect=founders"
+  // 3) hash-based handler for "#pricing" to enable direct scroll from /pricing static entry
+  // When migrating to a non-static host like Railway (Node server enabled), you can:
+  // - Remove the redirect/hash handlers entirely (they exist only because static hosting cannot run Next.js rewrites)
+  // - Keep or simplify popstate (optional). With real routing (app router or middleware/rewrites), these can be replaced by native navigation
+  // - Delete the public/founders and public/pricing HTML redirect files (they won't be needed with server rewrites)
+  
   useEffect(() => {
     console.log('useEffect triggered - currentPage:', currentPage, 'targetSection:', targetSection);
     

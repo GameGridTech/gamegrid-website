@@ -195,6 +195,12 @@ export default function ContactPage() {
                     <li>
                       <button 
                         onClick={() => {
+                          // STATIC-ONLY WORKAROUND
+                          // For static hosting (GitHub Pages), we simulate navigating to Founders
+                          // by sending the user back to the SPA root and programmatically
+                          // triggering the "The Founders" navigation after a small delay.
+                          // On Railway or any server platform with proper rewrites, replace
+                          // this entire block with: router.push('/founders') or <Link href="/founders" />
                           window.location.href = '/';
                           setTimeout(() => {
                             const foundersButtons = document.querySelectorAll('button');

@@ -348,6 +348,11 @@ export default function LegalPage() {
                 <li>
                   <button 
                     onClick={() => {
+                      // STATIC-ONLY WORKAROUND
+                      // For static hosting (GitHub Pages), simulate navigating to Founders
+                      // by returning to the SPA root and programmatically clicking the
+                      // Founders nav button. On Railway, replace this with a real link
+                      // to /founders and remove this block.
                       window.location.href = '/';
                       setTimeout(() => {
                         const foundersButtons = document.querySelectorAll('button');

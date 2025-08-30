@@ -82,6 +82,11 @@ const nextConfig: NextConfig = {
   
   // Rewrites to support SPA deep links for virtual subpages
   async rewrites() {
+    // STATIC-ONLY WORKAROUND
+    // These rewrites help when running with a server (dev/preview),
+    // but GitHub Pages (static) ignores them. Keep them during static phase
+    // for local dev, and feel free to replace/remove with proper server
+    // routes/middleware when migrating to Railway.
     return [
       { source: '/founders', destination: '/' },
       { source: '/pricing', destination: '/' },

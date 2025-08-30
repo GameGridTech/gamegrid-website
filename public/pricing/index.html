@@ -6,8 +6,13 @@
     <title>Pricing - GameGrid</title>
     <meta name="description" content="GameGrid pricing plans for sports leagues and tournaments">
     <script>
-        // Immediate redirect to preserve URL and trigger SPA routing
-        window.location.replace('/');
+        // Redirect to root but preserve the /pricing path for SPA routing
+        // Use history.replaceState to keep the URL intact
+        if (window.location.pathname === '/pricing') {
+            window.location.href = '/?redirect=pricing';
+        } else {
+            window.location.replace('/');
+        }
     </script>
 </head>
 <body>

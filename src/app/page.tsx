@@ -126,6 +126,25 @@ export default function Home() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
+  // Handle redirect parameter from static pages (GitHub Pages workaround)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get('redirect');
+    
+    if (redirect === 'founders') {
+      // Replace URL to /founders and trigger founders page
+      window.history.replaceState({ page: 'founders' }, '', '/founders');
+      setCurrentPage('founders');
+      setFoundersAnimationKey((prev) => prev + 1);
+    } else if (redirect === 'pricing') {
+      // Replace URL to /pricing and trigger pricing scroll
+      window.history.replaceState({ page: 'pricing' }, '', '/pricing');
+      setCurrentPage('home');
+      setTargetSection('#pricing');
+    }
+  }, []);
+
   return (
     <>
       {/* Navigation */}

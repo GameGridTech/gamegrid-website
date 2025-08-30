@@ -132,13 +132,35 @@ export default function Home() {
       window.history.replaceState({ page: 'founders' }, '', '/founders');
       setCurrentPage('founders');
       setFoundersAnimationKey((prev) => prev + 1);
-    } else if (redirect === 'pricing') {
-      // Replace URL to /pricing and trigger pricing scroll
-      window.history.replaceState({ page: 'pricing' }, '', '/pricing');
-      setCurrentPage('home');
-      setTargetSection('#pricing');
     }
   }, []); // Empty dependency array ensures this only runs once on mount
+
+  // Handle hash-based navigation for pricing section
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash === '#pricing') {
+        // Update URL to clean /pricing path and scroll to section
+        window.history.replaceState({ page: 'pricing' }, '', '/pricing');
+        setCurrentPage('home');
+        setTimeout(() => {
+          const element = document.getElementById('pricing');
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      }
+    };
+
+    // Check hash on initial load
+    handleHashChange();
+    
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   return (
     <>

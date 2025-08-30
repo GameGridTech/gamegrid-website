@@ -110,10 +110,11 @@ export default function Home() {
   useEffect(() => {
     const onPopState = () => {
       if (typeof window === 'undefined') return;
-      if (window.location.pathname === '/founders') {
+      const path = window.location.pathname;
+      if (path === '/founders' || path === '/founders/') {
         setCurrentPage('founders');
         setFoundersAnimationKey((prev) => prev + 1);
-      } else if (window.location.pathname === '/pricing') {
+      } else if (path === '/pricing' || path === '/pricing/') {
         setCurrentPage('home');
         setTargetSection('#pricing');
       } else {

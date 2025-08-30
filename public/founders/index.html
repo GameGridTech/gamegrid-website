@@ -7,8 +7,9 @@
     <meta name="description" content="Meet the founders behind GameGrid's mission to revolutionize grassroots sports">
     <script>
         // Redirect to root but preserve the /founders path for SPA routing
-        // Use history.replaceState to keep the URL intact
-        if (window.location.pathname === '/founders') {
+        // Handle both /founders and /founders/ (GitHub Pages adds trailing slash)
+        const path = window.location.pathname;
+        if (path === '/founders' || path === '/founders/') {
             window.location.href = '/?redirect=founders';
         } else {
             window.location.replace('/');

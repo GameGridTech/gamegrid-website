@@ -80,6 +80,14 @@ const nextConfig: NextConfig = {
     ];
   },
   
+  // Rewrites to support SPA deep links for virtual subpages
+  async rewrites() {
+    return [
+      { source: '/founders', destination: '/' },
+      { source: '/pricing', destination: '/' },
+    ];
+  },
+  
   // Bundle analyzer (run with ANALYZE=true npm run build)
   ...(process.env.ANALYZE === 'true' && {
     webpack: (config: any) => {

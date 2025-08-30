@@ -65,20 +65,29 @@ export default function Home() {
   const handleNavigation = (sectionId: string) => {
     console.log('handleNavigation called with:', sectionId, 'current page:', currentPage);
     
-    if (currentPage === 'founders') {
-      // If on founders page, go back to home with target section
-      console.log('Setting target section to:', sectionId);
+    const pushPathForSection = () => {
+      if (typeof window === 'undefined') return;
       if (sectionId === '#home') {
-        // For home, don't set target section, just go to home and scroll to top
+        window.history.pushState({ page: 'home' }, '', '/');
+      } else if (sectionId === '#pricing') {
+        window.history.pushState({ page: 'pricing' }, '', '/pricing');
+      }
+    };
+
+    if (currentPage === 'founders') {
+      // Leaving founders: update URL and return to home, optionally targeting a section
+      console.log('Setting target section from founders to:', sectionId);
+      pushPathForSection();
+      if (sectionId === '#home') {
         setCurrentPage('home');
         setTimeout(() => window.scrollTo(0, 0), 300);
       } else {
-        // For other sections, set target section
         setTargetSection(sectionId);
         setCurrentPage('home');
       }
     } else {
-      // If already on home, just scroll to section
+      // Already on home: update URL then scroll
+      pushPathForSection();
       if (sectionId === '#home') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
@@ -97,11 +106,34 @@ export default function Home() {
     return () => clearInterval(id);
   }, [words.length]);
 
+  // Sync URL <-> internal state for founders and pricing using History API without changing functionality
+  useEffect(() => {
+    const onPopState = () => {
+      if (typeof window === 'undefined') return;
+      if (window.location.pathname === '/founders') {
+        setCurrentPage('founders');
+        setFoundersAnimationKey((prev) => prev + 1);
+      } else if (window.location.pathname === '/pricing') {
+        setCurrentPage('home');
+        setTargetSection('#pricing');
+      } else {
+        setCurrentPage('home');
+      }
+    };
+    window.addEventListener('popstate', onPopState);
+    // Initialize state from current URL on first mount
+    onPopState();
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
   return (
     <>
       {/* Navigation */}
       <Navbar 
         onFoundersClick={() => {
+          if (typeof window !== 'undefined') {
+            window.history.pushState({ page: 'founders' }, '', '/founders');
+          }
           setCurrentPage('founders');
           setFoundersAnimationKey(prev => prev + 1);
         }}
@@ -125,6 +157,9 @@ export default function Home() {
               yearly={yearly}
               setYearly={setYearly}
               onFoundersClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.history.pushState({ page: 'founders' }, '', '/founders');
+                }
                 setCurrentPage('founders');
                 setFoundersAnimationKey(prev => prev + 1);
               }}
@@ -138,7 +173,7 @@ export default function Home() {
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200, duration: 0.6 }}
           >
-            <FoundersPage onBack={() => setCurrentPage('home')} animationKey={foundersAnimationKey} />
+            <FoundersPage onBack={() => { if (typeof window !== 'undefined' && window.location.pathname === '/founders') { window.history.back(); } else if (typeof window !== 'undefined') { window.history.replaceState({}, '', '/'); } setCurrentPage('home'); }} animationKey={foundersAnimationKey} />
           </motion.div>
         )}
       </AnimatePresence>

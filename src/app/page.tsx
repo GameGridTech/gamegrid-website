@@ -365,7 +365,7 @@ function HomeContent({ words, index, yearly, setYearly, onFoundersClick }: {
         </div>
       </section>
 
-            {/* Section 4: Pricing Plans */}
+            {/* TEMPORARILY COMMENTED OUT - Pricing not ready yet
             <section id="pricing" className="w-full mt-48 sm:mt-64 lg:mt-80 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <header className="text-center mb-8 sm:mb-12">
@@ -441,6 +441,7 @@ function HomeContent({ words, index, yearly, setYearly, onFoundersClick }: {
           </div>
         </div>
       </section>
+      */}
       {/* Footer (update logo path and link URLs) */}
       <footer className="w-full mt-28 sm:mt-36 border-t border-black/10 bg-black text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">

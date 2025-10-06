@@ -96,6 +96,7 @@ export default function Navbar({
               The Founders
             </button>
           </li>
+          {/* TEMPORARILY COMMENTED OUT - Pricing not ready yet
           <li>
             <button 
               onClick={(e) => {
@@ -107,6 +108,7 @@ export default function Navbar({
               Pricing
             </button>
           </li>
+          */}
         </ul>
 
         {/* Right: CTA & Mobile Menu Button */}
@@ -216,6 +218,7 @@ export default function Navbar({
                       The Founders
                     </button>
                   </motion.li>
+                  {/* TEMPORARILY COMMENTED OUT - Pricing not ready yet
                   <motion.li
                     variants={{
                       hidden: { y: 10, opacity: 0 },
@@ -233,6 +236,7 @@ export default function Navbar({
                       Pricing
                     </button>
                   </motion.li>
+                  */}
                   <motion.li 
                     className="pt-4 border-t border-black/10"
                     variants={{

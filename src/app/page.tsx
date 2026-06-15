@@ -18,6 +18,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Twitter, Instagram, Linkedin } from "lucide-react";
 import Navbar from "@/components/custom/Navbar";
 import { getBasePath } from "@/lib/basePath";
+import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/appStoreLinks";
 // Removed Swiper - using pure CSS marquee
 
 export default function Home() {
@@ -499,8 +500,26 @@ function HomeContent({ words, index, yearly, setYearly, onFoundersClick }: {
                 Downloads
               </h4>
               <ul className="space-y-3 text-white/80 text-sm">
-                <li>For iPhone <span className="text-white/50">(Soon)</span></li>
-                <li>For Android <span className="text-white/50">(Soon)</span></li>
+                <li>
+                  <a
+                    href={APP_STORE_URL}
+                    className="hover:text-white transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    For iPhone
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={PLAY_STORE_URL}
+                    className="hover:text-white transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    For Android
+                  </a>
+                </li>
               </ul>
             </div>
 

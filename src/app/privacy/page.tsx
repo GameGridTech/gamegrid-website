@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { APP_STORE_URL, PLAY_STORE_URL } from '@/lib/appStoreLinks';
 
 /**
  * Combined Terms & Conditions and Privacy Policy page for GameGrid app
@@ -381,8 +382,26 @@ export default function LegalPage() {
                 Downloads
               </h4>
               <ul className="space-y-3 text-white/80 text-sm">
-                <li>For iPhone <span className="text-white/50">(Soon)</span></li>
-                <li>For Android <span className="text-white/50">(Soon)</span></li>
+                <li>
+                  <a
+                    href={APP_STORE_URL}
+                    className="hover:text-white transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    For iPhone
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={PLAY_STORE_URL}
+                    className="hover:text-white transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    For Android
+                  </a>
+                </li>
               </ul>
             </div>
 

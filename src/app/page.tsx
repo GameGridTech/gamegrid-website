@@ -446,7 +446,7 @@ function HomeContent({ words, index, yearly, setYearly, onFoundersClick }: {
       {/* Footer (update logo path and link URLs) */}
       <footer className="w-full mt-28 sm:mt-36 border-t border-black/10 bg-black text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Brand */}
             <div className="space-y-4">
               <Image

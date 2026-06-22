@@ -193,31 +193,14 @@ export default function ContactPage() {
                         Schedule Meeting
                       </a>
                     </li>
-                    <li>
-                      <button 
-                        onClick={() => {
-                          // STATIC-ONLY WORKAROUND
-                          // For static hosting (GitHub Pages), we simulate navigating to Founders
-                          // by sending the user back to the SPA root and programmatically
-                          // triggering the "The Founders" navigation after a small delay.
-                          // On Railway or any server platform with proper rewrites, replace
-                          // this entire block with: router.push('/founders') or <Link href="/founders" />
-                          window.location.href = '/';
-                          setTimeout(() => {
-                            const foundersButtons = document.querySelectorAll('button');
-                            for (const button of foundersButtons) {
-                              if (button.textContent?.includes('Founders') || button.textContent?.includes('founders')) {
-                                button.click();
-                                break;
-                              }
-                            }
-                          }, 500);
-                        }}
-                        className="hover:text-white transition-colors text-left bg-transparent border-none p-0"
-                      >
-                        The Founders
-                      </button>
-                    </li>
+                <li>
+                  <Link 
+                    href="/founders"
+                    className="hover:text-white transition-colors"
+                  >
+                    The Founders
+                  </Link>
+                </li>
                   </ul>
                 </div>
 

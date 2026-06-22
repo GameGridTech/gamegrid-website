@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Asap_Condensed } from "next/font/google";
-import { getBasePath } from "@/lib/basePath";
 import "./globals.css";
+import AuthProviders from "@/components/providers/AuthProviders";
 
 
 // RootLayout: wraps every page. Controls global fonts, metadata, and shared UI (Navbar)
@@ -34,13 +34,13 @@ export const metadata: Metadata = {
   description: "Built for the grind. Engineered for every game. GameGrid is the ultimate sports league management platform with real-time stats, player dashboards, and strategy tools.",
   icons: {
     icon: [
-      { url: getBasePath("/logos/gamegrid-logo.png"), sizes: "16x16", type: "image/png" },
-      { url: getBasePath("/logos/gamegrid-logo.png"), sizes: "32x32", type: "image/png" },
-      { url: getBasePath("/logos/gamegrid-logo.png"), sizes: "48x48", type: "image/png" },
+      { url: "/logos/gamegrid-logo.png", sizes: "16x16", type: "image/png" },
+      { url: "/logos/gamegrid-logo.png", sizes: "32x32", type: "image/png" },
+      { url: "/logos/gamegrid-logo.png", sizes: "48x48", type: "image/png" },
     ],
-    shortcut: getBasePath("/logos/gamegrid-logo.png"),
+    shortcut: "/logos/gamegrid-logo.png",
     apple: [
-      { url: getBasePath("/logos/gamegrid-logo.png"), sizes: "180x180", type: "image/png" },
+      { url: "/logos/gamegrid-logo.png", sizes: "180x180", type: "image/png" },
     ],
   },
 };
@@ -56,7 +56,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${asapCondensed.variable} antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <AuthProviders>{children}</AuthProviders>
       </body>
     </html>
   );

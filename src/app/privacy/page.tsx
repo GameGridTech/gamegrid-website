@@ -347,28 +347,12 @@ export default function LegalPage() {
                   </a>
                 </li>
                 <li>
-                  <button 
-                    onClick={() => {
-                      // STATIC-ONLY WORKAROUND
-                      // For static hosting (GitHub Pages), simulate navigating to Founders
-                      // by returning to the SPA root and programmatically clicking the
-                      // Founders nav button. On Railway, replace this with a real link
-                      // to /founders and remove this block.
-                      window.location.href = '/';
-                      setTimeout(() => {
-                        const foundersButtons = document.querySelectorAll('button');
-                        for (const button of foundersButtons) {
-                          if (button.textContent?.includes('Founders') || button.textContent?.includes('founders')) {
-                            button.click();
-                            break;
-                          }
-                        }
-                      }, 500);
-                    }}
-                    className="hover:text-white transition-colors text-left bg-transparent border-none p-0"
+                  <Link 
+                    href="/founders"
+                    className="hover:text-white transition-colors"
                   >
                     The Founders
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </div>

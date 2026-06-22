@@ -3,32 +3,24 @@
 // Navbar: fixed top navigation with smooth scrolling
 // Edit tips:
 // - Logo image: change `src` at <Image src="/logos/navbar.png" />
-// - Link labels/targets: edit items in the Center Links <ul> (href="#..." must match section ids)
+// - Link labels/targets: edit items in the Center Links <ul>
 // - Background on scroll: tweak classes in header className (bg-*, border-*, backdrop-blur)
 // - CTA button: edit text/color in the Right CTA Link (style backgroundColor and inner text)
 
 import Image from "next/image";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import gsap from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { Menu, X } from "lucide-react";
-import { getBasePath } from "@/lib/basePath";
+import { Menu, X, LogOut, User } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAuth } from "@/lib/auth-context";
 
-// Register GSAP ScrollTo plugin for smooth scrolling functionality
-gsap.registerPlugin(ScrollToPlugin);
-
-export default function Navbar({ 
-  onFoundersClick, 
-  onNavigate 
-}: { 
-  onFoundersClick?: () => void;
-  onNavigate?: (sectionId: string) => void;
-  currentPage?: 'home' | 'founders';
-}) {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false); // toggles scrolled styles once page is offset
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // controls mobile menu visibility
+  const [showUserMenu, setShowUserMenu] = useState(false); // controls user dropdown menu
+  
+  // Auth state
+  const { isAuthenticated, user, logout, isLoading } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 8);
@@ -37,11 +29,16 @@ export default function Navbar({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-
-
   // Toggle mobile menu
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    logout();
+    setShowUserMenu(false);
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -51,77 +48,121 @@ export default function Navbar({
         ` ${isScrolled ? "bg-white/6 border-b border-black/10 backdrop-blur-md dark:bg-black/30 dark:border-white/10" : "bg-transparent"}`
       }
     >
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">{/* change max width/padding to alter navbar container */}
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
         {/* Left: Brand */}
         <div className="flex items-center gap-2">
-          <button 
+          <Link 
+            href="/"
             aria-label="GameGrid Home" 
             className="inline-flex items-center"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate?.('#home');
-            }}
           >
             <Image
-              src={getBasePath("/logos/navbar.png")} // swap this path to change the navbar logo
+              src="/logos/navbar.png" // swap this path to change the navbar logo
               alt="GameGrid navbar logo"
               width={124}
               height={124}
               priority
             />
-          </button>
+          </Link>
         </div>
 
         {/* Center: Links */}
-        <ul className="hidden md:flex items-center gap-8 text-sm font-bold text-foreground/90">{/* add/remove <li> to change nav links */}
+        <ul className="hidden md:flex items-center gap-8 text-sm font-bold text-foreground/90">
           <li>
-            <button 
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate?.('#home');
-              }}
+            <Link 
+              href="/"
               className="hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-sm transition-opacity duration-200"
             >
               Home
-            </button>
+            </Link>
           </li>
           <li>
-            <button 
-              onClick={(e) => {
-                e.preventDefault();
-                onFoundersClick?.();
-              }}
+            <Link 
+              href="/founders"
               className="hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-sm transition-opacity duration-200"
             >
               The Founders
-            </button>
+            </Link>
           </li>
           {/* TEMPORARILY COMMENTED OUT - Pricing not ready yet
           <li>
-            <button 
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate?.('#pricing');
-              }}
+            <Link 
+              href="#pricing"
               className="hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-sm transition-opacity duration-200"
             >
               Pricing
-            </button>
+            </Link>
           </li>
           */}
         </ul>
 
         {/* Right: CTA & Mobile Menu Button */}
         <div className="flex items-center gap-4">
-          <a
-            href="https://calendly.com/gamegrid/30min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex rounded-full px-4 py-2 text-sm font-bold text-white transition-all duration-200 hover:shadow-md hover:scale-105"
-            style={{ backgroundColor: "#0f5a1f" }} // change hex to update button color
-          >
-            Book a Demo {/* edit text for CTA label */}
-          </a>
+          {/* Auth Button - Login or User Menu */}
+          {!isLoading && (
+            <>
+              {isAuthenticated && user ? (
+                // Logged in - show user menu
+                <div className="relative hidden sm:block">
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold transition-all duration-200 hover:bg-gray-100"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-[#0f5a1f] flex items-center justify-center text-white text-xs font-bold">
+                      {user.firstName?.[0] || user.email?.[0]?.toUpperCase() || "U"}
+                    </div>
+                    <span className="hidden lg:inline text-gray-700">
+                      {user.firstName || user.email?.split("@")[0]}
+                    </span>
+                  </button>
+                  
+                  {/* User Dropdown Menu */}
+                  <AnimatePresence>
+                    {showUserMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 mt-2 w-48 rounded-xl bg-white shadow-lg border border-gray-100 py-2 z-50"
+                      >
+                        <div className="px-4 py-2 border-b border-gray-100">
+                          <p className="text-sm font-medium text-gray-900 truncate">
+                            {user.firstName} {user.lastName}
+                          </p>
+                          <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                        </div>
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setShowUserMenu(false)}
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <User className="w-4 h-4" />
+                          Dashboard
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Sign Out
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                // Not logged in - show login button
+                <Link
+                  href="/login"
+                  className="hidden sm:inline-flex rounded-full px-4 py-2 text-sm font-bold text-white transition-all duration-200 hover:shadow-md hover:scale-105"
+                  style={{ backgroundColor: "#0f5a1f" }}
+                >
+                  Login
+                </Link>
+              )}
+            </>
+          )}
           
           {/* Mobile Menu Button */}
           <button
@@ -190,16 +231,13 @@ export default function Navbar({
                       visible: { y: 0, opacity: 1 }
                     }}
                   >
-                    <button 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setIsMobileMenuOpen(false); // close mobile menu
-                        onNavigate?.('#home');
-                      }}
+                    <Link 
+                      href="/"
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="block w-full text-left px-4 py-3 text-lg font-bold text-foreground/90 hover:text-green-700 hover:bg-green-50 rounded-lg transition-all duration-200"
                     >
                       Home
-                    </button>
+                    </Link>
                   </motion.li>
                   <motion.li
                     variants={{
@@ -207,16 +245,13 @@ export default function Navbar({
                       visible: { y: 0, opacity: 1 }
                     }}
                   >
-                    <button 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setIsMobileMenuOpen(false); // close mobile menu
-                        onFoundersClick?.();
-                      }}
+                    <Link 
+                      href="/founders"
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="block w-full text-left px-4 py-3 text-lg font-bold text-foreground/90 hover:text-green-700 hover:bg-green-50 rounded-lg transition-all duration-200"
                     >
                       The Founders
-                    </button>
+                    </Link>
                   </motion.li>
                   {/* TEMPORARILY COMMENTED OUT - Pricing not ready yet
                   <motion.li
@@ -225,18 +260,16 @@ export default function Navbar({
                       visible: { y: 0, opacity: 1 }
                     }}
                   >
-                    <button 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setIsMobileMenuOpen(false); // close mobile menu
-                        onNavigate?.('#pricing');
-                      }}
+                    <Link 
+                      href="#pricing"
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="block w-full text-left px-4 py-3 text-lg font-bold text-foreground/90 hover:text-green-700 hover:bg-green-50 rounded-lg transition-all duration-200"
                     >
                       Pricing
-                    </button>
+                    </Link>
                   </motion.li>
                   */}
+                  {/* Auth Section in Mobile Menu */}
                   <motion.li 
                     className="pt-4 border-t border-black/10"
                     variants={{
@@ -244,16 +277,50 @@ export default function Navbar({
                       visible: { y: 0, opacity: 1 }
                     }}
                   >
-                    <a
-                      href="https://calendly.com/gamegrid/30min"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setIsMobileMenuOpen(false)} // close mobile menu
-                      className="block w-full text-center rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-200 hover:shadow-md"
-                      style={{ backgroundColor: "#0f5a1f" }}
-                    >
-                      Book a Demo
-                    </a>
+                    {!isLoading && (
+                      <>
+                        {isAuthenticated && user ? (
+                          // Logged in - show user info and logout
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-3 px-4 py-2">
+                              <div className="w-10 h-10 rounded-full bg-[#0f5a1f] flex items-center justify-center text-white font-bold">
+                                {user.firstName?.[0] || user.email?.[0]?.toUpperCase() || "U"}
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-900">
+                                  {user.firstName} {user.lastName}
+                                </p>
+                                <p className="text-sm text-gray-500">{user.email}</p>
+                              </div>
+                            </div>
+                            <Link
+                              href="/dashboard"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="block w-full text-center rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-200 hover:shadow-md"
+                              style={{ backgroundColor: "#0f5a1f" }}
+                            >
+                              Dashboard
+                            </Link>
+                            <button
+                              onClick={handleLogout}
+                              className="block w-full text-center rounded-full px-6 py-3 text-lg font-bold text-red-600 border-2 border-red-200 bg-red-50 transition-all duration-200 hover:bg-red-100"
+                            >
+                              Sign Out
+                            </button>
+                          </div>
+                        ) : (
+                          // Not logged in - show login button
+                          <Link
+                            href="/login"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block w-full text-center rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-200 hover:shadow-md"
+                            style={{ backgroundColor: "#0f5a1f" }}
+                          >
+                            Login
+                          </Link>
+                        )}
+                      </>
+                    )}
                   </motion.li>
                 </motion.ul>
               </nav>
@@ -264,5 +331,3 @@ export default function Navbar({
     </header>
   );
 }
-
-

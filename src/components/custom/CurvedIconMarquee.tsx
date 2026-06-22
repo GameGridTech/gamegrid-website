@@ -8,7 +8,6 @@
 // - Animation speed: change `speed` (seconds per loop) or per-item animationDelay formula
 import Image from "next/image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { getBasePath } from "@/lib/basePath";
 
 type Props = {
   height?: number;      // container height (px)
@@ -44,21 +43,21 @@ export default function CurvedIconMarquee({
       images?.length
         ? images
         : [
-            getBasePath("/section-2/app icons/51WY7cDgvjAnHyR2Gry7geHI.jpeg"),
-            getBasePath("/section-2/app icons/5Puoz9XAUZoBSsMbmbXezf25Jq4.jpeg"),
-            getBasePath("/section-2/app icons/7BbAV4C8h7iIWKdLSFwGZQztTw.jpeg"),
-            getBasePath("/section-2/app icons/DhUTkPGW0gWmz4hz5lZ62BS4rE.jpeg"),
-            getBasePath("/section-2/app icons/gtsLstRnv2zT5fVEwk5S8RktX4.jpeg"),
-            getBasePath("/section-2/app icons/isM3DqOZZApt7bs8i3Z8V5Z3ROM.jpeg"),
-            getBasePath("/section-2/app icons/jiMI5CUeRrAvFO7t5rzT5d5Iik.jpeg"),
-            getBasePath("/section-2/app icons/oiwJGY7LYutJACfrO9SQF7qV9fA.jpeg"),
-            getBasePath("/section-2/app icons/orrHAM0af6flwN979ZOG6wbdzCg.jpeg"),
-            getBasePath("/section-2/app icons/QyGuM43oh8i4yGjCDL85NbGpo.jpeg"),
-            getBasePath("/section-2/app icons/rC3Z7rxzMGRUgpWihf84wS1oQ.jpeg"),
-            getBasePath("/section-2/app icons/SgZaFtxBZPMGVb2SEKlO3fiU.jpeg"),
-            getBasePath("/section-2/app icons/STxEugn312YToO1IrJrIuDll90.jpeg"),
-            getBasePath("/section-2/app icons/ttxpecqovvTAroL5mzL2XhUPyu8.jpeg"),
-            getBasePath("/section-2/app icons/YA0eUClyaLyH4aelMPsMzTCkPI.jpeg"),
+            "/section-2/app icons/51WY7cDgvjAnHyR2Gry7geHI.jpeg",
+            "/section-2/app icons/5Puoz9XAUZoBSsMbmbXezf25Jq4.jpeg",
+            "/section-2/app icons/7BbAV4C8h7iIWKdLSFwGZQztTw.jpeg",
+            "/section-2/app icons/DhUTkPGW0gWmz4hz5lZ62BS4rE.jpeg",
+            "/section-2/app icons/gtsLstRnv2zT5fVEwk5S8RktX4.jpeg",
+            "/section-2/app icons/isM3DqOZZApt7bs8i3Z8V5Z3ROM.jpeg",
+            "/section-2/app icons/jiMI5CUeRrAvFO7t5rzT5d5Iik.jpeg",
+            "/section-2/app icons/oiwJGY7LYutJACfrO9SQF7qV9fA.jpeg",
+            "/section-2/app icons/orrHAM0af6flwN979ZOG6wbdzCg.jpeg",
+            "/section-2/app icons/QyGuM43oh8i4yGjCDL85NbGpo.jpeg",
+            "/section-2/app icons/rC3Z7rxzMGRUgpWihf84wS1oQ.jpeg",
+            "/section-2/app icons/SgZaFtxBZPMGVb2SEKlO3fiU.jpeg",
+            "/section-2/app icons/STxEugn312YToO1IrJrIuDll90.jpeg",
+            "/section-2/app icons/ttxpecqovvTAroL5mzL2XhUPyu8.jpeg",
+            "/section-2/app icons/YA0eUClyaLyH4aelMPsMzTCkPI.jpeg",
           ],
     [images]
   );
